@@ -1,5 +1,5 @@
 var myapp = angular.module("warren", []);
-var host = "http://localhost:5000/stocks/all";
+var host = "http://gabrieluribe.me:5000/stocks/all";
 
 myapp.controller("mainController", function ($scope, $http) {
 

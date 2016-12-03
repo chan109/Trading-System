@@ -1,12 +1,14 @@
 from __future__ import print_function
-from flask import Flask
-from flask import request
-from flask.json import jsonify
+# from flask import Flask
+# from flask import request
+# from flask.json import jsonify
+import flask
+# import flask.Response
 import sys
 import urllib2
 import json
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 
 def getSymbols():
@@ -51,7 +53,7 @@ def allStocks():
     query = buildQuery(symbolList)
     response = json.loads(urllib2.urlopen(query).read())
     # return jsonify(response["query"])
-    
+
     #TODO: parse safely
     quotes = response["query"]["results"]["quote"]
 
@@ -60,7 +62,11 @@ def allStocks():
         price = quote["LastTradePriceOnly"]
         stocks[symbol] = {"symbol": symbol, "price": price}
 
-    return jsonify(stocks)
+    # resp = flask.Response("resp")
+    # resp.headers['Access-Control-Allow-Origin'] = '*'
+    # resp.data = flask.jsonify(stocks)
+
+    return flask.jsonify(stocks)
 
 def buildQuery(symbolList):
     query_prefix = "https://query.yahooapis.com/v1/public/yql?q=select%20Symbol%2CLastTradePriceOnly%2CLastTradeTime%2CLastTradeDate%2CChange%20from%20yahoo.finance.quotes%20where%20symbol%20in%20("
@@ -76,6 +82,11 @@ def buildQuery(symbolList):
             query_companies += "%2C%22{0}%22".format(symbol)
 
     return query_prefix + query_companies + query_suffix
+
+@app.after_request
+def apply_caching(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    return response
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0')
