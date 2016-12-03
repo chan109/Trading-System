@@ -6,6 +6,8 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="../node_modules/angular/angular.min.js"></script>
+    <script src="../node_modules/zingchart/client/zingchart.min.js"></script>
+    <script src="../node_modules/zingchart-angularjs/src/zingchart-angularjs.js"></script>
     <script src="../statics/js/app.js"></script>
     <link href="../statics/css/style.css">
 </head>
@@ -42,13 +44,25 @@
 </nav>
 
 <div ng-controller="mainController" class="container-fluid">
-    <div ng-repeat="(symbol, price) in stocks">
+
+    <zingchart id="chart-1" zc-values="myData" zc-height=500 zc-width=600></zingchart>
+    <div ng-repeat="(symbol, object) in stocks">
         <div class="panel panel-default">
-            <div class="panel-heading" data-toggle="collapse" href="#new-tasks-container">
+            <div class="panel-heading">
                 <span class="glyphicon glyphicon-asterisk"></span>
-                {{symbol}} <span class="task-number">{{price}}</span>
+                <label>Name</label>: {{object.name}}
+                <span><label>Price</label>: {{object.price}}</span>
+                <span><label>Changes</label>: {{object.change}}</span>
+
+                <div class="pull-right btn-group">
+                <button class="btn btn-primary">Buy</button>
+                <button class="btn btn-danger">Sell</button>
+                <button class="btn btn-default" data-toggle="collapse" href="#{{symbol}}">Detail</button>
+
+                </div>
+                <div class="clearfix"></div>
             </div>
-            <div id="new-tasks-container" class="panel-collapse collapse ">
+            <div id="{{object.symbol}}" class="panel-collapse collapse ">
                 <div id="new-tasks-list" class="panel-body task-list">detail</div>
             </div>
 
