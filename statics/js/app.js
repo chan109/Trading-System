@@ -1,5 +1,6 @@
 var myapp = angular.module("warren", []);
-var host = "http://localhost:5000/stocks/all";
+var host = "http://gabrieluribe.me:5000/stocks/all";
+var test = "http://localhost/stocks/all"
 
 myapp.controller("mainController", function ($scope, $http) {
 
@@ -10,7 +11,7 @@ myapp.controller("mainController", function ($scope, $http) {
     //start polling data from the service
 
     $http({
-        url: host,
+        url: test,
         method: "GET"
     }).then(function successCallback(response) {
         debugger;
