@@ -42,11 +42,11 @@
 </nav>
 
 <div ng-controller="mainController" class="container-fluid">
-    <div ng-repeat="stock in stocks">
+    <div ng-repeat="(symbol, price) in stocks">
         <div class="panel panel-default">
             <div class="panel-heading" data-toggle="collapse" href="#new-tasks-container">
                 <span class="glyphicon glyphicon-asterisk"></span>
-                {{stock.name}} (<span class="task-number">{{stock.number}}</span>)
+                {{symbol}} <span class="task-number">{{price}}</span>
             </div>
             <div id="new-tasks-container" class="panel-collapse collapse ">
                 <div id="new-tasks-list" class="panel-body task-list">detail</div>
