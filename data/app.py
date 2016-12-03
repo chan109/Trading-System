@@ -60,7 +60,9 @@ def allStocks():
     for quote in quotes:
         symbol = quote["Symbol"]
         price = quote["LastTradePriceOnly"]
-        stocks[symbol] = {"symbol": symbol, "price": price}
+        name = quote["Name"]
+        change = quote["Change"]
+        stocks[symbol] = {"name": name, "symbol": symbol, "price": price, "change": change}
 
     # resp = flask.Response("resp")
     # resp.headers['Access-Control-Allow-Origin'] = '*'
@@ -69,7 +71,7 @@ def allStocks():
     return flask.jsonify(stocks)
 
 def buildQuery(symbolList):
-    query_prefix = "https://query.yahooapis.com/v1/public/yql?q=select%20Symbol%2CLastTradePriceOnly%2CLastTradeTime%2CLastTradeDate%2CChange%20from%20yahoo.finance.quotes%20where%20symbol%20in%20("
+    query_prefix = "https://query.yahooapis.com/v1/public/yql?q=select%20Symbol%2CLastTradePriceOnly%2CLastTradeTime%2CLastTradeDate%2CChange%2CName%20from%20yahoo.finance.quotes%20where%20symbol%20in%20("
     query_suffix = ")&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback="
     query_companies = ""
 
