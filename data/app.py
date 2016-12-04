@@ -93,21 +93,23 @@ def buyStock():
     global all_stocks
     global portfolio
     global user_balance
-    symbol = flask.request.form['symbol']
+    symbol = flask.request.form['symbol']#.encode('ascii')
+    print(all_stocks.keys())
+    print(symbol)
     #quantity = flask.request.form['quantity']
     stock = all_stocks[symbol]
     price = stock["price"]
 
-    if portfolio[symbol] != None:
+    if portfolio.has_key(symbol):
         portfolio[symbol] = {"quantity": portfolio[symbol]["quantity"] + 1}
     else:
         portfolio[symbol] = {"quantity": 1}
 
-    user_balance -= price
+    user_balance -= float(price)
 
     print(user_balance)
 
-    return True
+    return flask.jsonify("1")
 
 @app.route('/user/balance')
 def getBalance():
