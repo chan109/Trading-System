@@ -7,11 +7,15 @@ import flask
 import sys
 import urllib2
 import json
-import MySQLdb
 
 
 app = flask.Flask(__name__)
-
+global user_balance
+user_balance = 10000
+global portfolio
+portfolio = {}
+global all_stocks
+all_stocks = {}
 
 def getSymbols():
     symbols = ["ABT", "ABBV", "ACN", "ACE", "ADBE", "ADT", "AAP", "AES", "AET", "AFL", "AMG", "A", "GAS",
@@ -50,8 +54,8 @@ def getSymbols():
 
 @app.route('/stocks/all')
 def allStocks():
+    global all_stocks
     symbolList = getSymbols()
-    stocks = {}
     query = buildQuery(symbolList)
     response = json.loads(urllib2.urlopen(query).read())
     # return jsonify(response["query"])
@@ -65,9 +69,9 @@ def allStocks():
         name = quote["Name"]
         change = quote["Change"]
         time = quote["LastTradeTime"]
-        stocks[symbol] = {"name": name, "symbol": symbol, "price": price, "change": change, "time": time}
+        all_stocks[symbol] = {"name": name, "symbol": symbol, "price": price, "change": change, "time": time}
 
-    return flask.jsonify(stocks)
+    return flask.jsonify(all_stocks)
 
 def buildQuery(symbolList):
     query_prefix = "https://query.yahooapis.com/v1/public/yql?q=select%20Symbol%2CLastTradePriceOnly%2CLastTradeTime%2CLastTradeDate%2CChange%2CName%20from%20yahoo.finance.quotes%20where%20symbol%20in%20("
@@ -83,6 +87,37 @@ def buildQuery(symbolList):
             query_companies += "%2C%22{0}%22".format(symbol)
 
     return query_prefix + query_companies + query_suffix
+
+@app.route('/stocks/buy', methods=['POST'])
+def buyStock():
+    global all_stocks
+    global portfolio
+    global user_balance
+    symbol = flask.request.form['symbol']
+    #quantity = flask.request.form['quantity']
+    stock = all_stocks[symbol]
+    price = stock["price"]
+
+    if portfolio[symbol] != None:
+        portfolio[symbol] = {"quantity": portfolio[symbol]["quantity"] + 1}
+    else:
+        portfolio[symbol] = {"quantity": 1}
+
+    user_balance -= price
+
+    print(user_balance)
+
+    return True
+
+@app.route('/user/balance')
+def getBalance():
+    global user_balance
+    return flask.jsonify(user_balance)
+
+@app.route('/user/portfolio')
+def getPortfolio():
+    global portfolio
+    return flask.jsonify(portfolio)
 
 @app.after_request
 def apply_caching(response):
