@@ -101,11 +101,33 @@ def buyStock():
     price = stock["price"]
 
     if portfolio.has_key(symbol):
-        portfolio[symbol] = {"quantity": portfolio[symbol]["quantity"] + 1}
+        portfolio[symbol] = {"quantity": portfolio[symbol]["quantity"] + 1, "price": all_stocks[symbol]["price"], "name": all_stocks[symbol]["name"], "change": all_stocks[symbol]["change"]}
     else:
-        portfolio[symbol] = {"quantity": 1}
+        portfolio[symbol] = {"quantity": 1, "price": all_stocks[symbol]["price"], "name": all_stocks[symbol]["name"], "change": all_stocks[symbol]["change"]}
 
     user_balance -= float(price)
+
+    print(user_balance)
+
+    return flask.jsonify(user_balance)
+
+@app.route('/stocks/sell', methods=['POST'])
+def sellStock():
+    global all_stocks
+    global portfolio
+    global user_balance
+    symbol = flask.request.form['symbol']#.encode('ascii')
+    print(all_stocks.keys())
+    print(symbol)
+    #quantity = flask.request.form['quantity']
+    stock = all_stocks[symbol]
+    price = stock["price"]
+
+    if portfolio.has_key(symbol):
+        quantity = portfolio[symbol]["quantity"]
+        if quantity > 0:
+            user_balance += float(price)
+            portfolio[symbol] = {"quantity": quantity - 1, "price": all_stocks[symbol]["price"], "name": all_stocks[symbol]["name"], "change": all_stocks[symbol]["change"]}
 
     print(user_balance)
 
