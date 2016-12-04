@@ -1,6 +1,6 @@
 var myapp = angular.module("warren", ["zingchart-angularjs"]);
 var host = "http://gabrieluribe.me:5000/stocks/all";
-var test = "http://localhost:5000/stocks/all"
+var test = "http://localhost:5000/stocks/all";
 
 myapp.controller("mainController", function ($scope, $http) {
 
@@ -9,7 +9,7 @@ myapp.controller("mainController", function ($scope, $http) {
     //                {"sybmol": "AppNeta", "price": 5}];
 
     //start polling data from the service
-    $scope.myData = [1,2,3,4,5];
+    $scope.myData = [1,2,28,4,5];
 
     $http({
         url: test,
