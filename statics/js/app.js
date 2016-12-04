@@ -1,8 +1,9 @@
 var myapp = angular.module("warren", ["zingchart-angularjs"]);
 var host = "http://gabrieluribe.me:5000/stocks/all";
+var testHost = "http://localhost:5000/stocks/";
 var test = "http://localhost:5000/stocks/all";
 
-myapp.controller("mainController", function ($scope, $http) {
+myapp.controller("mainController", function ($scope, $http, $interval) {
 
     //sample data
     //$scope.stocks = [{"symbol": "Fincad", "price": 5}, {"sybmol": "Microsoft", "price": 4}, {"sybmol": "Google", "price": 3},
@@ -10,6 +11,7 @@ myapp.controller("mainController", function ($scope, $http) {
 
     //start polling data from the service
     $scope.myData = [1,2,28,4,5];
+
 
     $http({
         url: test,
@@ -26,7 +28,8 @@ myapp.controller("mainController", function ($scope, $http) {
     });
     
     $scope.buy = function (symbol) {
-        $http.post("host",symbol).success(function (response) {
+        debugger;
+        $http.post(testHost+"buy",symbol).success(function (response) {
             console.log(response);
         })
     }
