@@ -1,7 +1,11 @@
 var myapp = angular.module("warren", ["zingchart-angularjs"]);
 var host = "http://gabrieluribe.me:5000/stocks/all";
+var buyHost = "http://gabrieluribe.me:5000/stocks/buy";
 var testHost = "http://localhost:5000/stocks/";
 var test = "http://localhost:5000/stocks/all";
+myapp.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+}]);
 
 myapp.controller("mainController", function ($scope, $http, $interval) {
 
@@ -19,7 +23,7 @@ myapp.controller("mainController", function ($scope, $http, $interval) {
     }).then(function successCallback(response) {
         console.log(response.data);
         $scope.stocks=response.data;
-        // this callback will be called asynchronously
+        // this callbalsck will be called asynchronously
         // when the response is available
     }, function errorCallback(response) {
         console.log(response);
@@ -29,8 +33,20 @@ myapp.controller("mainController", function ($scope, $http, $interval) {
     
     $scope.buy = function (symbol) {
         debugger;
-        $http.post(testHost+"buy",symbol).success(function (response) {
+        $http({
+            url: buyHost,
+            method: "POST",
+            data:"symbol="+symbol
+        }).then(function successCallback(response) {
+            console.log(response.data);
+            debugger
+                $scope.stocks=response.data;
+            // this callbalsck will be called asynchronously
+            // when the response is available
+        }, function errorCallback(response) {
             console.log(response);
-        })
+            // called asynchronously if an error occurs
+            // or server returns response with an error status.
+        });
     }
 });
