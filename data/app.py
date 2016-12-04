@@ -7,6 +7,8 @@ import flask
 import sys
 import urllib2
 import json
+import MySQLdb
+
 
 app = flask.Flask(__name__)
 
@@ -62,11 +64,8 @@ def allStocks():
         price = quote["LastTradePriceOnly"]
         name = quote["Name"]
         change = quote["Change"]
-        stocks[symbol] = {"name": name, "symbol": symbol, "price": price, "change": change}
-
-    # resp = flask.Response("resp")
-    # resp.headers['Access-Control-Allow-Origin'] = '*'
-    # resp.data = flask.jsonify(stocks)
+        time = quote["LastTradeTime"]
+        stocks[symbol] = {"name": name, "symbol": symbol, "price": price, "change": change, "time": time}
 
     return flask.jsonify(stocks)
 
