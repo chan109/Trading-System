@@ -1,7 +1,7 @@
 var myapp = angular.module("warren", ["zingchart-angularjs"]);
 var host = "http://gabrieluribe.me:5000/";
-var buyHost = "http://gabrieluribe.me:5000/stocks/buy";
-var sellHost = "http://gabrieluribe.me:5000/stocks/sell";
+var buyHost = "http://localhost:5000/stocks/buy";
+var sellHost = "http://localhost:5000/stocks/sell";
 var testHost = "http://localhost:5000/stocks/";
 var test = "http://localhost:5000/stocks/";
 myapp.config(['$httpProvider', function ($httpProvider) {
@@ -42,6 +42,7 @@ myapp.controller("mainController", function ($scope, $http, $interval) {
             console.log(response.data);
             debugger
                 $scope.money=response.data;
+
             // this callbalsck will be called asynchronously
             // when the response is available
         }, function errorCallback(response) {

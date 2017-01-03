@@ -90,6 +90,7 @@ def buildQuery(symbolList):
 
 @app.route('/stocks/buy', methods=['POST'])
 def buyStock():
+    print('hello')
     global all_stocks
     global portfolio
     global user_balance
