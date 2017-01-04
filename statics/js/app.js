@@ -71,7 +71,7 @@ myapp.controller("mainController", function ($scope, $http, $interval) {
     };
     $scope.proforio=function () {
         $http({
-            url: host+"user/portfolio",
+            url: "http://localhost:5000/user/portfolio",
             method: "GET"
         }).then(function successCallback(response) {
             console.log(response.data);
