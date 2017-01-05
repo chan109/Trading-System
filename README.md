@@ -25,3 +25,4 @@ Wheras, clicking sell remove the trade from the proforio and increase the total 
   * Javascript
   * Bootstrap
   * Yahoo API (For retrieving real-time stock data)
+  * Python base framework, flask
